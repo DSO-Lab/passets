@@ -1,0 +1,92 @@
+version: "3"
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.4.1
+    container_name: passets-elasticsearch
+    environment:
+      - TZ=Asia/Shanghai
+#      - ES_JAVA_OPTS=-Xms256m -Xmx512m
+      - discovery.type=single-node
+    ports:
+      - "127.0.0.1:9210:9200"
+    volumes:
+      - ./data/logs:/usr/share/elasticsearch/logs
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - passets
+    restart: unless-stopped
+
+  logstash:
+    image: dsolab/passets-logstash:1.0.0
+    container_name: passets-logstash
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200/
+      - ELASTICSEARCH_INDEX=passets
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./data/logs:/usr/share/logstash/logs
+      - ./data/logstash:/usr/share/logstash/data
+      - ./rules/apps.json:/opt/wappalyzer/apps.json:ro
+    networks:
+      passets:
+        ipv4_address: 172.255.20.100
+    restart: unless-stopped
+
+  kibana:
+    image: kibana:7.4.1
+    container_name: passets-kibana
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./data/logs:/usr/share/kibana/logs
+      - ./data/kibana:/usr/share/kibana/data
+    ports:
+      - "127.0.0.1:5601:5601"
+    networks:
+      - passets
+    restart: unless-stopped
+
+  api:
+    image: dsolab/passets-api:1.0.0
+    container_name: passets-api
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_INDEX=passets
+      - WAIT_SERVICE=passets-elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "8081:8080"
+    networks:
+      - passets
+    restart: unless-stopped
+
+  sensor:
+    image: dsolab/passets-sensor:1.0.0
+    container_name: passets-sensor
+    environment:
+      - tag=localhost
+      - interface=eth1
+      - ip=172.255.20.100
+      - port=5044
+      - switch=on
+      - debug=off
+    depends_on:
+      - logstash
+    network_mode: host
+    restart: unless-stopped
+
+networks:
+  passets:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.255.20.0/24
