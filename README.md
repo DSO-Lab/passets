@@ -7,16 +7,16 @@
 
 Passets 是一套由 DSO 安全实验室（DSO Security Lab）开源的被动资产识别框架，用于基于被动流量的网络资产发掘。整体框架包括四大组件：
 
-**Sensor**
+**[passets-sensor](https://github.com/DSO-Lab/passets-sensor)**
 > 网络流量采集模块：提供流量采集及基本的流量过滤和处理。
 
-**Logstash**
+**[passets-logstash](https://github.com/DSO-Lab/passets-logstash)**
 > 数据清洗模块：根据数据清洗插件对数据进行深度清洗、标记和重组。
 
 **ElasticSearch**
 > 数据存储模块：负责数据的存储、检索、汇聚等。
 
-**API**
+**[passets-api](https://github.com/DSO-Lab/passets-api)**
 > 外部接口模块：负责根据业务需求提供所需的数据。
 
 
