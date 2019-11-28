@@ -25,6 +25,12 @@ systemctl start pf_ring
 systemctl enable pf_ring
 ```
 
+pf_ring测试:
+
+```
+pfcount -i ens192
+```
+
 ### 虚拟化场景网络配置
 
 > 创建虚拟交换机网络，并分配独立物理网口，该网口用于接收流量镜像数据使用。
