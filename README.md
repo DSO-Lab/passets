@@ -1,11 +1,11 @@
-# Passets
+## ![](docs/images/logo.png)
 
 [![Python 3.x](https://img.shields.io/badge/python-3.x-yellow.svg)](https://www.python.org/) [![Ruby 2.5](https://img.shields.io/badge/ruby-2.5-red.svg)](https://www.ruby-lang.org/) [![Nodejs 8.x](https://img.shields.io/badge/nodejs-8.x-green.svg)](https://www.ruby-lang.org/) [![Java 1.8](https://img.shields.io/badge/java-1.8-red.svg)](https://www.java.com/) [![Platform linux&docker](https://img.shields.io/badge/platform-linux&docker-9cf.svg)](https://www.java.com/) [![License](https://img.shields.io/badge/license-GPLv3-red.svg)](https://raw.githubusercontent.com/knownsec/Pocsuite/master/docs/COPYING)
 
 
 ## 概述
 
-Passets 是一套由 DSO 安全实验室（DSO Security Lab）开源的被动资产识别框架，用于基于被动流量的网络资产发掘。整体框架包括四大组件：
+Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.org)开源的被动资产识别框架，用于基于被动流量的网络资产发现。整体框架包括四大组件：
 
 **[passets-sensor](https://github.com/DSO-Lab/passets-sensor)**
 > 网络流量采集模块：提供流量采集及基本的流量过滤和处理。
@@ -22,10 +22,10 @@ Passets 是一套由 DSO 安全实验室（DSO Security Lab）开源的被动资
 
 ## 特性
 * 从采集到数据清洗全部支持分布式架构
-* 数据清晰插件可定制
+* 数据清洗插件可自行定制
 * 支持多种硬件环境（PC、ARM）
 * 容器化部署，操作简单
-* 更多 ...
+* 更多...
 
 
 ## 环境
@@ -88,7 +88,7 @@ $ docker-compose up -d
 
 http://x.x.x.x:8081/
 
-或者通过下面的地址访问原始数据：
+或者通过集成的 Kibana 进行可视化查询或展示（[Kibana 配置方法示例](docs/KIBANA_HELP.md)）：
 
 http://127.0.0.1:5601/
 
@@ -111,6 +111,10 @@ http://127.0.0.1:5601/
    ├─ kibana                 # Kibana 数据目录
    └─ logs                   # E.L.K 日志目录
 ```
+
+## 指纹库升级
+
+[下载](https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json) 最新指纹库，覆盖 `rules/apps.json` 文件，然后重启 `logstash` 容器即可生效。
 
 ## 链接
 
