@@ -25,3 +25,27 @@ docker-compose up -d
 [下载基本配置文件](../kibana.ndjson)
 
 导入成功后，即可使用`Discover` 和 `Dashboard`等模块。
+
+也可以使用下面的请求通过程序导入 Kibana 配置，实现自动化配置：
+
+```
+POST /api/saved_objects/_import?overwrite=true HTTP/1.1
+Host: 127.0.0.1:5601
+Connection: keep-alive
+Content-Length: 36098
+Origin: http://127.0.0.1:5601
+kbn-version: 7.4.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarylDGWyMO66tGqmSoA
+Accept: */*
+Referer: http://127.0.0.1:5601/app/kibana
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+
+------WebKitFormBoundarylDGWyMO66tGqmSoA
+Content-Disposition: form-data; name="file"; filename="kibana.ndjson"
+Content-Type: application/octet-stream
+
+<导出的配置文件内容>
+------WebKitFormBoundarylDGWyMO66tGqmSoA--
+```
