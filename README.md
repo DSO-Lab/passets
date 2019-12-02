@@ -14,6 +14,7 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 > 数据清洗模块：根据数据清洗插件对数据进行深度清洗、标记和重组。
 
 **ElasticSearch**
+
 > 数据存储模块：负责数据的存储、检索、汇聚等。
 
 **[passets-api](https://github.com/DSO-Lab/passets-api)**
@@ -23,7 +24,7 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 ## 特性
 * 从采集到数据清洗全部支持分布式架构
 * 数据清洗插件可自行定制
-* 支持多种硬件环境（PC、ARM）
+* 支持多种硬件环境（x86、ARM）
 * 容器化部署，操作简单
 * 更多...
 
@@ -43,9 +44,9 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 
 | 参数项 | 最小配置 | 推荐配置 |
 |------|----------|----------|
-| CPU  | 无     | 四核     |
+| CPU  | 四核   | 八核    |
 | 内存 | 8G     | 16G      |
-| 存储 | 40G    | 1T       |
+| 存储 | 100G  | 1T       |
 
 
 ## 安装方法
@@ -55,21 +56,28 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 **第一步**：点击 [这里](https://github.com/DSO-Lab/passets/archive/master.zip) 下载最新的部署文件包并解压缩：
 
 ```bash
-$ curl https://github.com/DSO-Lab/passets/archive/master.zip -o master.zip
+$ curl -sL https://github.com/DSO-Lab/passets/archive/master.zip -o master.zip
 $ unzip master.zip
 ```
 
-**第二步**：根据所的软/硬件平台修改对应 [`docker-compose`](#directory) 配置文件中下列参数中的监听网口编号：
+**第二步**：根据所的软/硬件平台修改对应 [`docker-compose`](#directory) 配置文件中下列参数：
 
 ```
-services.sensor.environment
-- interface=<网卡编号>
+services：
+    ...
+    sensor：
+        ...
+        environment：
+        # 流量镜像网卡配置
+        - interface=<网卡编号>
+        # 是否开启详细http数据分析（包含：Http Body、Http Header、详细应用指纹识别等）
+        - switch=on
 ```
 
-**第三步**：下载最新的指纹库
+第三步**：下载最新的指纹库
 
 ``` bash
-$ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
+$ curl -sL https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
 ```
 
 **第四步**：数据目录赋权
@@ -86,7 +94,7 @@ $ docker-compose up -d
 
 启动后等待一段时间，则可以通过下面的地址访问 API 接口：
 
-http://x.x.x.x:8081/
+http://x.x.x.x:8081/swagger-ui.html#/
 
 或者通过集成的 Kibana 进行可视化查询或展示（[Kibana 配置方法示例](docs/KIBANA_HELP.md)）：
 
@@ -98,10 +106,10 @@ http://127.0.0.1:5601/
 帮助文档位于 [```docs```](./docs) 目录.
 
 
-## 目录结构<div id="directory"></div>
+## 目录结构
 
 ```
-├─ docker-compose.yml        # 适用于 X86_64 平台的 docker-compose 配置文件
+├─ docker-compose.yml        # 适用于 x86_64 平台的 docker-compose 配置文件
 ├─ docker-compose_armv7.yml  # 适用于 ARMv7 平台的 docker-compose 配置文件
 ├─ rules                     # 指纹库文件夹
 │  └─ apps.json              # 从 Wappalyzer 开源项目下获取 指纹库文件,默认为空文件，上线需要用最新的文件替换

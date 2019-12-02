@@ -1,15 +1,16 @@
 # 通过 Kibana 实现可视化展示
 
-Passets 被动资产发现框架内置了 `Kibana`，可以方便用户进行数据的可视化展示。
+passets 被动资产发现框架内置了 `Kibana`，可以方便用户进行数据的可视化展示。
 
 为了安全考虑，默认情况下 Kibana 仅对 `127.0.0.1` 开放，用户可以通过修改 `docker-compose.yml` 文件中的端口映射配置，使其可被外部访问。
 
 ```
 services:
-  ... ...
+  ...
   kibana:
-    ... ...
+    ...
     ports:
+      # 去除IP
       - "5601:5601"
 ```
 
@@ -20,11 +21,16 @@ docker-compose down
 docker-compose up -d
 ```
 
-初次使用 Kibana 时，需要进行必要的配置，主要是在访问 `Discover` 模块的时候定义索引表达式为 `passets`。为了便于使用，本项目定义了一套简单的图表，可以在初始使用的时候通过 “`Management/Saved Objects`” 页面的 “`Import`” 功能导入。
+初始化 Kibana 后，需要进行必要的配置，为便于使用可以通过导入配置文件完成以下步骤，已包含项目预定义的一套统计图表。
 
-[下载基本配置文件](../kibana.ndjson)
+```
+1、访问 Discover 模块，并自定义索引表达式为 passets
+2、根据数据分析需求，创建Dashboard统计图表
+```
 
-导入成功后，即可使用`Discover` 和 `Dashboard`等模块。
+通过 “`Management/Saved Objects`” 页面的 “`Import`” 功能导入。
+
+[下载默认配置文件](../kibana.ndjson)
 
 也可以使用下面的请求通过程序导入 Kibana 配置，实现自动化配置：
 
@@ -49,3 +55,13 @@ Content-Type: application/octet-stream
 <导出的配置文件内容>
 ------WebKitFormBoundarylDGWyMO66tGqmSoA--
 ```
+
+导入成功后，即可使用`Discover` 和 `Dashboard`等模块。
+
+```
+# 数据检索功能页面
+http://x.x.x.x:5601/app/kibana#/discover
+# 数据统计仪表板页面
+http://x.x.x.x:5601/app/kibana#/dashboard/130f0440-102f-11ea-a7f8-65c9feeb13c9
+```
+
