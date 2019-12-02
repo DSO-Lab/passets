@@ -121,7 +121,7 @@ http://127.0.0.1:5601/
 ├─ docker-compose.yml        # 适用于 x86_64 平台的 docker-compose 配置文件
 ├─ docker-compose_armv7.yml  # 适用于 ARMv7 平台的 docker-compose 配置文件
 ├─ rules                     # 指纹库文件夹
-│  └─ apps.json              # 从 Wappalyzer 开源项目下获取 指纹库文件,默认为空文件，上线需要用最新的文件替换
+│  └─ apps.json              # Wappalyzer开源项目指纹文件，默认安装为空，上线前下载最新的指纹文件替换
 └─data                       # 容器数据目录
    ├─ elasticsearch          # ES 数据目录
    ├─ logstash               # Logstash 数据目录
