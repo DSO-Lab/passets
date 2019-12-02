@@ -5,7 +5,7 @@
 
 ## 概述
 
-Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.org)开源的被动资产识别框架，用于基于被动流量的网络资产发现。整体框架包括四大组件：
+passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.org)开源的被动资产识别框架，用于基于被动流量的网络资产发现。整体框架包括四大组件：
 
 **[passets-sensor](https://github.com/DSO-Lab/passets-sensor)**
 > 网络流量采集模块：提供流量采集及基本的流量过滤和处理。
@@ -53,14 +53,14 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 
 docker环境安装：
 
-```
-curl -fsSL https://get.docker.com/ | sh
-yum -y install docker-compose
-systemctl start docker
-systemctl enable docker
+```bash
+$ curl -fsSL https://get.docker.com/ | sh
+$ yum -y install docker-compose
+$ systemctl start docker
+$ systemctl enable docker
 ```
 
-passets快速部署方法：
+项目快速部署方法：
 
 **第一步**：点击 [这里](https://github.com/DSO-Lab/passets/archive/master.zip) 下载最新的部署文件包并解压缩：
 
