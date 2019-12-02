@@ -74,7 +74,7 @@ services：
         - switch=on
 ```
 
-第三步**：下载最新的指纹库
+**第三步**：下载最新的指纹库
 
 ``` bash
 $ curl -sL https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json

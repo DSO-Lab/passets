@@ -56,7 +56,7 @@ Content-Type: application/octet-stream
 ------WebKitFormBoundarylDGWyMO66tGqmSoA--
 ```
 
-导入成功后，即可使用`Discover` 和 `Dashboard`等模块。
+导入成功后，重新访问或刷新页面，即可使用`Discover` 和 `Dashboard`等模块。
 
 ```
 # 数据检索功能页面
