@@ -51,7 +51,16 @@ Passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 
 ## 安装方法
 
-快速部署方法：
+docker环境安装：
+
+```
+curl -fsSL https://get.docker.com/ | sh
+yum -y install docker-compose
+systemctl start docker
+systemctl enable docker
+```
+
+passets快速部署方法：
 
 **第一步**：点击 [这里](https://github.com/DSO-Lab/passets/archive/master.zip) 下载最新的部署文件包并解压缩：
 
@@ -103,7 +112,7 @@ http://127.0.0.1:5601/
 
 ## 帮助文档
 
-帮助文档位于 [```docs```](./docs) 目录.
+帮助文档位于 [```docs```](./docs) 目录
 
 
 ## 目录结构
