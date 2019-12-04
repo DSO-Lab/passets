@@ -5,7 +5,7 @@
 
 ## 概述
 
-passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.org)开源的被动资产识别框架，用于基于被动流量的网络资产发现。整体框架包括四大组件：
+passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsolab.org)开源的被动资产识别框架，用于基于被动流量的网络资产发现。整体框架包括四大组件：
 
 **[passets-sensor](https://github.com/DSO-Lab/passets-sensor)**
 > 网络流量采集模块：提供流量采集及基本的流量过滤和处理。
@@ -13,11 +13,12 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 **[passets-logstash](https://github.com/DSO-Lab/passets-logstash)**
 > 数据清洗模块：根据数据清洗插件对数据进行深度清洗、标记和重组。
 
-**ElasticSearch**
+**[ElasticSearch](https://hub.docker.com/_/elasticsearch)**
 
 > 数据存储模块：负责数据的存储、检索、汇聚等。
 
 **[passets-api](https://github.com/DSO-Lab/passets-api)**
+
 > 外部接口模块：负责根据业务需求提供所需的数据。
 
 
@@ -51,11 +52,11 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://dsolab.o
 
 ## 安装方法
 
-docker环境安装：
+依赖环境安装：
 
 ```bash
 $ curl -fsSL https://get.docker.com/ | sh
-$ yum -y install docker-compose
+$ yum -y install docker-compose unzip
 $ systemctl start docker
 $ systemctl enable docker
 ```
@@ -65,8 +66,9 @@ $ systemctl enable docker
 **第一步**：点击 [这里](https://github.com/DSO-Lab/passets/archive/master.zip) 下载最新的部署文件包并解压缩：
 
 ```bash
-$ curl -sL https://github.com/DSO-Lab/passets/archive/master.zip -o master.zip
+$ curl -L https://github.com/DSO-Lab/passets/archive/master.zip -o master.zip
 $ unzip master.zip
+$ cd passets-master/
 ```
 
 **第二步**：根据所的软/硬件平台修改对应 [`docker-compose`](#directory) 配置文件中下列参数：
@@ -86,7 +88,7 @@ services：
 **第三步**：下载最新的指纹库
 
 ``` bash
-$ curl -sL https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
+$ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
 ```
 
 **第四步**：数据目录赋权

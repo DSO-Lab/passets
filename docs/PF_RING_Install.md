@@ -30,10 +30,10 @@ yum install pfring-dkms
 systemctl start pf_ring
 systemctl enable pf_ring
 
-pfcount -i ens192
+pfcount -i <流量镜像网卡>
 ```
 
-### 虚拟化场景网络配置
+### 虚拟化场景流量镜像配置
 
 **第一步**：创建虚拟交换机网络，并分配独立物理网口，该网口用于接收流量镜像数据使用。
 
