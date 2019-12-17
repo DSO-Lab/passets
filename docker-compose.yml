@@ -73,10 +73,12 @@ services:
     container_name: passets-sensor
     environment:
       - tag=localhost
-      - interface=eth1
+      - interface=ens192
       - ip=172.255.20.100
       - port=5044
       - switch=on
+      - cache=1024
+      - timeout=3600
       - debug=off
     depends_on:
       - logstash
