@@ -1,39 +1,75 @@
 version: "3"
 
 services:
+  api:
+    image: dsolab/passets-api:1.0.1
+    container_name: passets-api
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_INDEX=logstash-passets
+    ports:
+      - 8081:8080
+    networks:
+      - passets
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+
   elasticsearch:
     image: elasticsearch:7.4.1
     container_name: passets-elasticsearch
     environment:
       - TZ=Asia/Shanghai
-#      - ES_JAVA_OPTS=-Xms256m -Xmx512m
       - discovery.type=single-node
     ports:
-      - "127.0.0.1:9210:9200"
+      - 9200:9200
     volumes:
-      - ./data/logs:/usr/share/elasticsearch/logs
       - ./data/elasticsearch:/usr/share/elasticsearch/data
+      - ./data/logs:/usr/share/elasticsearch/logs
     networks:
       - passets
     restart: unless-stopped
 
   logstash:
-    image: dsolab/passets-logstash:1.0.0
+    image: logstash:7.4.1
     container_name: passets-logstash
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200/
-      - ELASTICSEARCH_INDEX=passets
+      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_INDEX=logstash-passets
+    ports:
+      - 5044:5044/udp
+    volumes:
+      - ./data/logstash:/usr/share/logstash/data
+      - ./data/logs:/usr/share/logstash/logs
+      - ./logstash/:/usr/share/logstash/config/
+      - ./rules/GeoLite2-City.mmdb:/usr/share/logstash/config/GeoLite2-City.mmdb
+    restart: unless-stopped
     depends_on:
       - elasticsearch
-    volumes:
-      - ./data/logs:/usr/share/logstash/logs
-      - ./data/logstash:/usr/share/logstash/data
-      - ./rules/apps.json:/opt/wappalyzer/apps.json:ro
     networks:
       passets:
-        ipv4_address: 172.255.20.100
+        ipv4_address: 172.20.20.100
+    entrypoint: ['/usr/share/logstash/bin/logstash', '-f', '/usr/share/logstash/config/logstash.conf', '--config.reload.automatic']
+
+  filter:
+    image: dsolab/passets-filter:1.0.1
+    container_name: passets-filter
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_HOST=passets-elasticsearch:9200
+      - ELASTICSEARCH_INDEX=logstash-passets
+      - THREADS=20
+      - CACHE_SIZE=1024
+      - DEBUG=0
+    volumes:
+      - ./config/plugin.yml:/opt/filter/config/plugin.yml
+    networks:
+      - passets
     restart: unless-stopped
+    depends_on:
+      - elasticsearch
 
   kibana:
     image: kibana:7.4.1
@@ -41,49 +77,29 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
-    depends_on:
-      - elasticsearch
     volumes:
       - ./data/logs:/usr/share/kibana/logs
       - ./data/kibana:/usr/share/kibana/data
     ports:
-      - "127.0.0.1:5601:5601"
-    networks:
-      - passets
-    restart: unless-stopped
-
-  api:
-    image: dsolab/passets-api:1.0.0
-    container_name: passets-api
-    environment:
-      - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
-      - ELASTICSEARCH_INDEX=passets
-      - WAIT_SERVICE=passets-elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    ports:
-      - "8081:8080"
+      - "5601:5601"
     networks:
       - passets
     restart: unless-stopped
 
   sensor:
-    image: dsolab/passets-sensor:1.0.0
+    image: dsolab/passets-sensor:1.0.1
     container_name: passets-sensor
     environment:
-      - tag=localhost
-      - interface=ens192
-      - ip=172.255.20.100
       - port=5044
-      - switch=on
-      - cache=1024
-      - timeout=3600
+      - tag=sensor
+      - interface=ens192
+      - ip=172.20.20.100
       - debug=off
+      - switch=on
+    restart: unless-stopped
     depends_on:
       - logstash
     network_mode: host
-    restart: unless-stopped
 
 networks:
   passets:
@@ -91,4 +107,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.255.20.0/24
+        - subnet: 172.20.20.0/24

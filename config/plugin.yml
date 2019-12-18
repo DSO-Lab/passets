@@ -1,0 +1,33 @@
+---
+# 根节点：插件名称，与plugins目录下的文件名对应
+# 二级节点：
+# - enable: 是否启用插件
+# - index: 插件的处理顺序，0以上的整数，数值越小
+
+# ip:
+#   enable: false
+#   index: 1
+#   inner_ips:
+#     - 10.0.0.0-10.255.255.255
+#     - 172.16.0.0-172.31.255.255
+#     - 192.168.0.0-192.168.255.255
+#     - 169.254.0.0-169.254.255.255
+#     - 127.0.0.1-127.0.0.255
+
+# geoip:
+#   enable: false
+#   index: 2
+
+# url:
+#   enable: false
+#   index: 3
+
+wappalyzer:
+  enable: true
+  index: 1
+
+nmap:
+  enable: true
+  index: 2
+
+
