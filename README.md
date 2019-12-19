@@ -54,7 +54,7 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 
 ```bash
 $ curl -fsSL https://get.docker.com/ | sh
-$ yum -y install docker-compose unzip
+$ yum -y install docker-compose
 $ systemctl start docker
 $ systemctl enable docker
 ```
@@ -65,7 +65,7 @@ $ systemctl enable docker
 
 ```bash
 $ curl -L https://github.com/DSO-Lab/passets/archive/master.tar.gz -o master.tar.gz
-$ unzip master.tar.gz
+$ tar -zxf master.tar.gz
 $ cd passets-master/
 ```
 
