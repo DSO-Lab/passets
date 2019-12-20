@@ -2,7 +2,7 @@ version: "3"
 
 services:
   api:
-    image: dsolab/passets-api:1.0.1
+    image: dsolab/passets-api:1.0.0
     container_name: passets-api
     environment:
       - TZ=Asia/Shanghai
@@ -36,8 +36,9 @@ services:
     container_name: passets-logstash
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
+      - INNER_IP_LIST=10.0.0.0-10.255.255.255,172.16.0.0-172.31.255.255,192.168.0.0-192.168.255.255,169.254.0.0-169.254.255.255,127.0.0.1-127.0.0.255
     ports:
       - 5044:5044/udp
     volumes:
@@ -54,11 +55,11 @@ services:
     entrypoint: ['/usr/share/logstash/bin/logstash', '-f', '/usr/share/logstash/config/logstash.conf', '--config.reload.automatic']
 
   filter:
-    image: dsolab/passets-filter:1.0.1
+    image: dsolab/passets-filter:1.0.0
     container_name: passets-filter
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_HOST=passets-elasticsearch:9200
+      - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
       - THREADS=20
       - CACHE_SIZE=1024
@@ -76,7 +77,7 @@ services:
     container_name: passets-kibana
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_URL=passets-elasticsearch:9200
     volumes:
       - ./data/logs:/usr/share/kibana/logs
       - ./data/kibana:/usr/share/kibana/data
@@ -87,7 +88,7 @@ services:
     restart: unless-stopped
 
   sensor:
-    image: dsolab/passets-sensor:1.0.1
+    image: dsolab/passets-sensor:1.0.0
     container_name: passets-sensor
     environment:
       - port=5044
@@ -95,6 +96,8 @@ services:
       - interface=ens192
       - ip=172.20.20.100
       - debug=off
+      - cache=1024
+      - timeout=3600
       - switch=on
     restart: unless-stopped
     depends_on:

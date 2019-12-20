@@ -1,7 +1,18 @@
 require 'ipaddr'
 
 def register(params)
-	@inner_ips = params["inner_ips"]
+	@inner_ips = params["inner_ips"].split(',')
+	@inner_ips.each_index do |index|
+		inner_ip_range = @inner_ips[index].split('-')
+		if inner_ip_range.size == 2
+			inner_start = ip_to_number(inner_ip_range[0])
+			inner_end = ip_to_number(inner_ip_range[1])
+			@inner_ips[index] = [inner_start, inner_end]
+		else
+			inner_ip = ip_to_number(inner_ip_range[0])
+			@inner_ips[index] = [inner_ip, inner_ip]
+		end
+	end
 end
 
 def ip_to_number(ip)
@@ -16,18 +27,8 @@ end
 
 def is_inner_ip(ip_num)
 	@inner_ips.each do |item|
-		inner_ip_range = item.split('-')
-		if inner_ip_range.size == 2
-			inner_start = ip_to_number(inner_ip_range[0])
-			inner_end = ip_to_number(inner_ip_range[1])
-			if ip_num >= inner_start and ip_num <= inner_end
-				return true
-			end
-		else
-			inner_ip = ip_to_number(inner_ip_range[0])
-			if inner_ip == ip_num
-				return true
-			end
+		if ip_num >= inner_start and ip_num <= inner_end
+			return true
 		end
 	end
 
