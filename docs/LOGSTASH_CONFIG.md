@@ -22,7 +22,6 @@ Passets 被动资产识别引擎中在 Logstash 模块位置集成了四个数�
 
 | 插件名 | 插件用途 | 数据变化 |
 |--------|----------|----------|
-| mutate | 数据结构调整 | 生成host属性，将message节点的数据移到上一级
 | ip     | 识别内网IP   | 生成ip_num（IP地址的数值形式）、inner（标识内外网）属性
 | url    | 拆分URL，生成URL模板 | 生成site（站点）、path（路径）、url_tpl（URL模板）属性
 | geoip  | 识别IP的地理位置     | 生成geoip.country_name（国家）、geoip.city_name（城市）、geoip.location.lon（经度）、geoip.location.lat（维度）属性
@@ -32,7 +31,7 @@ Passets 被动资产识别引擎中在 Logstash 模块位置集成了四个数�
 配置文件 logstash.conf 示例：
 
 ```
-# 数据结构调整规则
+# 数据结构调整规则，生成host字段，将 message 字段的子字段全部移到上一级，并删除 message 字段
 mutate {
     add_field => {
         "host" => "%{ip}:%{port}"
@@ -75,12 +74,22 @@ if [pro] == 'HTTP' {
 }
 ```
 
+## 创建数据、日志目录
+
+```
+mkdir data/logstash -p -m 777
+mkdir data/logs -p -m 777
+```
+
+**注意**: 目录权限必须为777
+
+
 ## 容器启动
 
 ### 使用 docker 命令启动
 
 ```
-docker run -p 5044 -e "TZ=Asia/Shanghai" -e "ELASTICSEARCH_URL=http://passets-elasticsearch:9200" -e "ELASTICSEARCH_INDEX=logstash-passets" -v "./data/logstash:/usr/share/logstash/data" -v "./data/logs:/usr/share/logstash/logs" -v "./logstash/:/usr/share/logstash/config/" -v "./rules/GeoLite2-City.mmdb:/usr/share/logstash/config/GeoLite2-City.mmdb" elasticsearch:7.4.1 /usr/share/logstash/bin/logstash -f /usr/share/logstash/config/logstash.conf --config.reload.automatic
+docker run -p 5044 -e "TZ=Asia/Shanghai" -e "ELASTICSEARCH_URL=passets-elasticsearch:9200" -e "ELASTICSEARCH_INDEX=logstash-passets" -e "INNER_IP_LIST=192.168.0.0-192.168.255.255" -v "$(pwd)/data/logstash:/usr/share/logstash/data" -v "$(pwd)/data/logs:/usr/share/logstash/logs" -v "$(pwd)/logstash/:/usr/share/logstash/config/" -v "$(pwd)/rules/GeoLite2-City.mmdb:/usr/share/logstash/config/GeoLite2-City.mmdb" -d  logstash:7.4.1 /usr/share/logstash/bin/logstash -f /usr/share/logstash/config/logstash.conf --config.reload.automatic
 ```
 
 ### 使用 Docker Compose 启动

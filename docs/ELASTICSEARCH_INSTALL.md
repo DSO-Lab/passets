@@ -10,12 +10,21 @@ Elasticsearch 7.4.1安装，详细说明，可以参见[官方支持文档](http
 docker pull elasticsearch:7.4.1
 ```
 
+## 创建数据、日志目录
+
+```
+mkdir data/elasticsearch -p -m 777
+mkdir data/logs -p -m 777
+```
+
+**注意**: 目录权限必须为777
+
 ## 容器启动
 
 ### 单节点 ES 容器启动
 
 ```
-docker run -p 9200:9200 -e "TZ=Asia/Shanghai" -e "discovery.type=single-node" -v "./data/logs:/usr/share/elasticsearch/logs" -v "./data/elasticsearch:/usr/share/elasticsearch/data" elasticsearch:7.4.1
+docker run -p 9200:9200 -e "TZ=Asia/Shanghai" -e "discovery.type=single-node" -v "$(pwd)/data/logs:/usr/share/elasticsearch/logs" -v "$(pwd)/data/elasticsearch:/usr/share/elasticsearch/data" -d elasticsearch:7.4.1
 ```
 
 ### 采用 Docker Compose 启动单节点 ES 容器
