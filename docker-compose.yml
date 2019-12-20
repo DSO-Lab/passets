@@ -65,6 +65,8 @@ services:
       - CACHE_SIZE=1024
       - DEBUG=0
     volumes:
+      - ./rules/apps.json:/opt/filter/rules/apps.json
+      - ./rules/nmap-service-probes:/opt/filter/rules/nmap-service-probes
       - ./config/plugin.yml:/opt/filter/config/plugin.yml
     networks:
       - passets
