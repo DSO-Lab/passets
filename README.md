@@ -100,16 +100,19 @@ $ rm -f GeoLite2-City.tar.gz
 
 **第四步**：定义自己的内部IP地址
 
-内部IP地址默认已配置为通用局域网IP地址，用户可以通过修改 `logstash/logstash.conf` 中的 `inner_ips` 参数定义积极的内部 IP 地址。格式如下：
+内部IP地址默认已配置为通用局域网IP地址，用户可以通过修改 `docker-compose.yml` 中 Logstash 容器的 `INNER_IP_LIST` 环境变量来自定义内部 IP 地址列表。格式为“<起始IP>-<结束IP>,IP”（单条记录支持IP范围和单个IP，多条记录用半角逗号分隔，不能有空格），默认配置如下：
 
 ```
-ruby {
-    path => '/usr/share/logstash/config/ip.rb'
-    script_params => {
-        'inner_ips' => '10.0.0.0-10.255.255.255,172.16.0.0-172.31.255.255,192.168.0.0-192.168.255.255,169.254.0.0-169.254.255.255,127.0.0.1-127.0.0.255'
-        ]
-    }
-}
+version: "3"
+
+services:
+  ... ...
+  
+  logstash:
+    ... ...
+    environment:
+      ... ...
+      - INNER_IP_LIST=10.0.0.0-10.255.255.255,172.16.0.0-172.31.255.255,192.168.0.0-192.168.255.255,169.254.0.0-169.254.255.255,127.0.0.1-127.0.0.255
 ```
 
 **第五步**：数据目录赋权
@@ -157,7 +160,8 @@ http://x.x.x.x:5601/
 ├─ rules                     # 指纹库
 │  ├─ apps.json              # Wappalyzer 开源Web指纹库
 │  ├─ GeoLite2-City.mmdb     # GEOIP2 IP 定位数据库
-│  └─ nmap-service-probes    # NMAP 指纹库
+│  ├─ nmap-service-probes    # NMAP 指纹库
+│  └─ nmap.json              # 解析后的 NMAP 指纹库，自动生成
 ├─ logstash                  # Logstash 相关配置文件
 │  ├─ ip.rb                  # 识别内外网IP的过滤插件
 │  ├─ url.rb                 # 识别站点、路径及URL模板的过滤插件
@@ -165,7 +169,7 @@ http://x.x.x.x:5601/
 │  ├─ logstash.conf
 │  └─ log4j2.properties
 └─data                       # 容器数据
-   ├─ elasticsearch          # ES 数据
+   ├─ elasticsearch          # Elasticsearch 数据
    ├─ logstash               # Logstash 数据
    ├─ kibana                 # Kibana 数据
    └─ logs                   # E.L.K 日志

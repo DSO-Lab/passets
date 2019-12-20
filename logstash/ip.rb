@@ -27,7 +27,7 @@ end
 
 def is_inner_ip(ip_num)
 	@inner_ips.each do |item|
-		if ip_num >= inner_start and ip_num <= inner_end
+		if ip_num >= item[0] and ip_num <= item[1]
 			return true
 		end
 	end
