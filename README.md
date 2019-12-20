@@ -145,7 +145,7 @@ http://x.x.x.x:5601/
 详细配置说明参见 [```docs```](./docs) 目录中的文档。
 
 
-## 目录结构<div id="directory"></div>
+## 目录结构
 
 ```
 ├─ docker-compose.yml        # docker-compose 配置文件（X86_64）
