@@ -69,17 +69,23 @@ $ tar -zxf master.tar.gz
 $ cd passets-master/
 ```
 
-**第二步**：根据所需的软/硬件平台修改对应 [`docker-compose`]配置文件中下列参数：
+**第二步**：修改 [`docker-compose`] 配置文件中下列参数：
 
 ```
-services：
+services:
+    api:
     ...
-    sensor：
+      environment:
+        ...
+        # 配置API访问密钥
+        SECRET=<dsolab-passets-api-secret>
+    ...
+    sensor:
         ...
         environment：
         # 流量镜像网卡配置
         - interface=<网卡编号>
-        # 是否开启详细http数据分析（包含：Http Body、Http Header、详细应用指纹识别等）
+        # 是否开启详细http数据分析（开启后可获取 TCP、HTTP报文内容，从而可以实现应用指纹识别）
         - switch=on
 ```
 
@@ -204,6 +210,7 @@ http://x.x.x.x:5601/
 |--------------|---------------------|--------------------------------------------------|
 | environment  | ELASTICSEARCH_URL   | ES 服务器地址:端口
 | environment  | ELASTICSEARCH_INDEX | ES 索引前缀，需与Logstash配置保持一致
+| environment  | SECRET              | API 认证密钥，任意不含空格的字符串
 | port         | 8080                | 对外开放的 API 端口
 
 

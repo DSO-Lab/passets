@@ -6,8 +6,9 @@ services:
     container_name: passets-api
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=http://passets-elasticsearch:9200
+      - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
+      - SECRET=<dsolab-passets-api-secret>
     ports:
       - 8081:8080
     networks:
