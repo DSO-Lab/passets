@@ -1,6 +1,6 @@
 # 简介
 
-此文件夹用于放置 Wappalyzer、Nmap 和 GEOIP2 的规则文件，文件夹权限必须为 777，否则数据清洗模块可能会出现异常。
+此文件夹用于放置 Wappalyzer、Nmap 指纹规则文件。
 
 # 规则库获取
 
@@ -18,8 +18,3 @@ https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json
 
 https://github.com/nmap/nmap/raw/master/nmap-service-probes
 
-## GeoLite2-City.mmdb
-
-**GeoLite2 IP定位库**
-
-https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
