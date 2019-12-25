@@ -77,7 +77,7 @@ services:
     ...
       environment:
         ...
-        # 配置API访问密钥
+        # 配置API访问密钥，该密钥用于通过 API 获取资产数据
         SECRET=<dsolab-passets-api-secret>
     ...
     sensor:
@@ -208,7 +208,7 @@ http://x.x.x.x:5601/
 |--------------|---------------------|--------------------------------------------------|
 | environment  | ELASTICSEARCH_URL   | ES 服务器地址:端口
 | environment  | ELASTICSEARCH_INDEX | ES 索引前缀，需与Logstash配置保持一致
-| environment  | SECRET              | API 认证密钥，任意不含空格的字符串
+| environment  | SECRET              | API 认证密钥，任意不含空格的字符串，该密钥用于填充 API 模块的 X-Auth-Secret 参数，实现 API 访问认证
 | port         | 8080                | 对外开放的 API 端口
 
 
