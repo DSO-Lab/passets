@@ -11,7 +11,7 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 > 提供流量采集及基本的流量过滤和处理。
 
 **数据存储模块（ELK）**
-> 采用成熟的 Elasticsearch + Logstash + Kibana 框架， 负责采集数据的基本加工、存储及索引等。
+> 采用成熟的 [Elasticsearch](docs/ELASTICSEARCH.md) + [Logstash](docs/LOGSTASH.md) + [Kibana](docs/KIBANA.md) 框架， 负责采集数据的基本加工、存储及索引等。
 
 **[数据清洗模块](https://github.com/DSO-Lab/passets-filter)**
 > 根据数据清洗插件对数据进行深度清洗、标记和重组。
@@ -85,8 +85,6 @@ services:
         environment：
         # 流量镜像网卡配置
         - interface=<网卡编号>
-        # 是否开启详细http数据分析（开启后可获取 TCP、HTTP报文内容，从而可以实现应用指纹识别）
-        - switch=on
 ```
 
 **第三步**：获取最新的指纹库、IP定位数据库
@@ -96,7 +94,7 @@ services:
 $ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
 
 # NMAP 指纹库
-$ curl -L https://github.com/nmap/nmap/raw/master/nmap-service-probes -o ./rules/nmap-service-probes
+$ curl -L https://svn.nmap.org/nmap/nmap-service-probes -o ./rules/nmap-service-probes
 
 # GeoLite2 IP定位库
 $ curl -L https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz -o GeoLite2-City.tar.gz

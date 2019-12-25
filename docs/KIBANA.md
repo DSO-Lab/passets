@@ -1,8 +1,8 @@
-# 通过 Kibana 实现可视化展示
+# Kibana 使用说明
 
-passets 被动资产发现框架内置了 `Kibana`，可以方便用户进行数据的可视化展示。
+Passets 被动资产发现框架内置了 `Kibana`，可以方便用户进行数据的可视化展示。
 
-为了安全考虑，默认情况下 Kibana 仅对 `127.0.0.1` 开放，用户可以通过修改 `docker-compose.yml` 文件中的端口映射配置，使其可被外部访问。
+为了安全考虑，可以将 Kibana 设置为仅对 `127.0.0.1` 开放，用户可以通过修改 `docker-compose.yml` 文件中的端口映射配置：
 
 ```
 services:
@@ -10,8 +10,7 @@ services:
   kibana:
     ...
     ports:
-      # 去除IP
-      - "5601:5601"
+      - "127.0.0.1:5601:5601"
 ```
 
 修改配置后需要执行下面重新部署操作，使其生效：
@@ -30,7 +29,7 @@ docker-compose up -d
 
 通过 “`Management/Saved Objects`” 页面的 “`Import`” 功能导入。
 
-[下载默认配置文件](../kibana.ndjson)
+[下载默认配置文件](../config/kibana.ndjson)
 
 也可以使用下面的请求通过程序导入 Kibana 配置，实现自动化配置：
 
@@ -61,7 +60,8 @@ Content-Type: application/octet-stream
 ```
 # 数据检索功能页面
 http://x.x.x.x:5601/app/kibana#/discover
-# 数据统计仪表板页面
-http://x.x.x.x:5601/app/kibana#/dashboard/130f0440-102f-11ea-a7f8-65c9feeb13c9
+
+# 数据统计仪表板页面(近3天数据)
+http://10.87.222.222:5601/app/kibana#/dashboard/130f0440-102f-11ea-a7f8-65c9feeb13c9?embed=true&_g=(refreshInterval:(pause:!t,value:10),time:(from:now-3d,to:now))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(hidePanelTitles:!t,useMargins:!t),viewMode:view)
 ```
 
