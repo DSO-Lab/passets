@@ -1,4 +1,4 @@
-# Elasticsearch 7.4.1 安装
+# Elasticsearch 使用说明
 
 Elasticsearch 7.4.1安装，详细说明，可以参见[官方支持文档](https://www.elastic.co/guide/en/elasticsearch/reference/7.4/docker.html)。
 

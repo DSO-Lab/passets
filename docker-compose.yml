@@ -46,7 +46,6 @@ services:
       - ./data/logstash:/usr/share/logstash/data
       - ./data/logs:/usr/share/logstash/logs
       - ./logstash/:/usr/share/logstash/config/
-      - ./rules/GeoLite2-City.mmdb:/usr/share/logstash/config/GeoLite2-City.mmdb
     restart: unless-stopped
     depends_on:
       - elasticsearch
