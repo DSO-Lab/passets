@@ -21,7 +21,7 @@ def ip_to_number(ip)
 		return ip_num.to_i
 	rescue => e
 		puts("IP address parse failed. IP: #{ip}, Message: #{e.message}")
-		return 0
+		return -1
 	end
 end
 
@@ -43,7 +43,7 @@ def filter(event)
 	end
 
 	ip_num = ip_to_number(ip)
-	if ip_num == 0
+	if ip_num < 0
 		event.tag('_ip_lookup_failure')
 		return [ event ]
 	end
