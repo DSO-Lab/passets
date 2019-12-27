@@ -33,15 +33,27 @@ systemctl enable pf_ring
 pfcount -i <流量镜像网卡>
 ```
 
-### 虚拟化场景流量镜像配置
+#### 网卡驱动兼容
 
-**第一步**：创建虚拟交换机网络，并分配独立物理网口，该网口用于接收流量镜像数据使用。
+pf_ring网卡兼容性官方介绍：
 
-![exsi_vSwitch](images/exsi_vSwitch.png)
+```
+https://www.ntop.org/products/packet-capture/pf_ring/
+```
 
-**第二步**：虚拟交换机属性配置，开启”混杂模式“。
+intel千兆网卡支持清单：
 
-![exsi_vSwitch_config](images/exsi_vSwitch_config.png)
+```
+https://www.intel.com/content/www/us/en/support/articles/000005480/network-and-i-o/ethernet-products.html
+```
+
+intel万兆网卡支持清单：
+
+```
+https://downloadcenter.intel.com/download/14687/Intel-Network-Adapter-Driver-for-PCIe-Intel-10-Gigabit-Ethernet-Network-Connections-Under-Linux-?wapkw=ixgbe
+```
+
+
 
 
 
