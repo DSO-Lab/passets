@@ -89,6 +89,7 @@ services:
 
 **第三步**：获取最新的指纹库、IP定位数据库
 
+获取最新的指纹库、IP定位数据库，分别保存到当前目录下的 rules 和 logstash 目录下。
 ``` bash
 # Wappalyzer 指纹库
 $ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
@@ -121,6 +122,7 @@ services:
 
 **第五步**：创建数据、日志目录并赋权
 
+在 docker-compose.yml 文件同级目录下创建下列目录：
 ``` bash
 $ mkdir data/elasticsearch/nodes -p -m 777
 $ mkdir data/logstash -p -m 777
