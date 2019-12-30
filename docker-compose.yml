@@ -79,7 +79,7 @@ services:
     container_name: passets-kibana
     environment:
       - TZ=Asia/Shanghai
-      - ELASTICSEARCH_URL=passets-elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://passets-elasticsearch:9200
     volumes:
       - ./data/logs:/usr/share/kibana/logs
       - ./data/kibana:/usr/share/kibana/data
