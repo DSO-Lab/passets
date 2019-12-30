@@ -17,12 +17,29 @@ wget http://packages.ntop.org/centos/ntop.repo -O ntop.repo
 rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum clean all
 yum update
-yum install pfring-dkms
+yum -y install pfring-dkms
 ```
 
-**第二步**：宿主机重启，选择升级后的内核启动：
+**第二步**：内核升级后重启使配置生效（不同版本系统升级后的内核版本不一样，根据实际情况选择）
+
+方法一：重启，手工选择。
+
+宿主机重启，grub引导时选择升级后的内核启动：
 
 ![Kernel_Upgrade_Reboot](images/Kernel_Upgrade_Reboot.png)
+
+方法二：修改默认grub配置，重启。
+
+```bash
+# 查看所有的内核版本
+cat /boot/grub2/grub.cfg | grep "menuentry"
+
+# 修改默认启动内核
+grub2-set-default 'CentOS Linux (3.10.0-1062.4.3.el7.x86_64) 7 (Core)'
+
+# 检查配置是否生效
+grub2-editenv list
+```
 
 **第三步**：pf_ring启动、功能测试:
 
