@@ -11,7 +11,7 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 > 提供流量采集及基本的流量过滤和处理。
 
 **数据存储模块（ELK）**
-> 采用成熟的 [Elasticsearch](docs/ELASTICSEARCH.md) + [Logstash](docs/LOGSTASH.md) + [Kibana](docs/KIBANA.md) 框架， 负责采集数据的基本加工、存储及索引等。
+> 采用成熟的 [Elasticsearch](docs/ELASTICSEARCH.md) + [Logstash](https://github.com/DSO-Lab/passets-logstash/README.md) + [Kibana](docs/KIBANA.md) 框架， 负责采集数据的基本加工、存储及索引等。
 
 **[数据清洗模块](https://github.com/DSO-Lab/passets-filter)**
 > 根据数据清洗插件对数据进行深度清洗、标记和重组。
@@ -21,6 +21,7 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 
 
 ## 特性
+
 * 从采集到数据清洗全部支持分布式架构
 * 居于流量的资产指纹识别
 * 支持多种硬件架构（x86、ARM）
@@ -53,10 +54,10 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 依赖环境安装：
 
 ```bash
-$ curl -fsSL https://get.docker.com/ | sh
-$ yum -y install docker-compose
-$ systemctl start docker
-$ systemctl enable docker
+curl -fsSL https://get.docker.com/ | sh
+yum -y install docker-compose
+systemctl start docker
+systemctl enable docker
 ```
 
 ### 单机快速部署
@@ -64,9 +65,9 @@ $ systemctl enable docker
 **第一步**：点击 [这里](https://github.com/DSO-Lab/passets/archive/master.tar.gz) 下载最新的部署文件包并解压缩：
 
 ```bash
-$ curl -L https://github.com/DSO-Lab/passets/archive/master.tar.gz -o master.tar.gz
-$ tar -zxf master.tar.gz
-$ cd passets-master/
+curl -L https://github.com/DSO-Lab/passets/archive/master.tar.gz -o master.tar.gz
+tar -zxf master.tar.gz
+cd passets-master/
 ```
 
 **第二步**：修改 [`docker-compose`] 配置文件中下列参数：
@@ -89,23 +90,20 @@ services:
 
 **第三步**：获取最新的指纹库、IP定位数据库
 
-获取最新的指纹库、IP定位数据库，分别保存到当前目录下的 rules 和 logstash 目录下。
+获取最新的指纹库，保存到当前目录下的 rules 目录下。
 ``` bash
 # Wappalyzer 指纹库
-$ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
+curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rules/apps.json
 
 # NMAP 指纹库
-$ curl -L https://svn.nmap.org/nmap/nmap-service-probes -o ./rules/nmap-service-probes
-
-# GeoLite2 IP定位库
-$ curl -L https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz -o GeoLite2-City.tar.gz
-$ tar -C ./logstash/ --strip-components=1 -zxf GeoLite2-City.tar.gz
-$ rm -f GeoLite2-City.tar.gz
+curl -L https://svn.nmap.org/nmap/nmap-service-probes -o ./rules/nmap-service-probes
 ```
+
+IP 地址数据库的更新请参阅 [passets-logstash](https://github.com/DSO-Lab/passets-logstash/README.md) 的文档说明。
 
 **第四步**：定义自己的内部IP地址
 
-内部IP地址默认已配置为通用局域网IP地址，用户可以通过修改 `docker-compose.yml` 中 Logstash 容器的 `INNER_IP_LIST` 环境变量来自定义内部 IP 地址列表。格式为“<起始IP>-<结束IP>,IP”（单条记录支持IP范围和单个IP，多条记录用半角逗号分隔，不能有空格），默认配置如下：
+内部IP地址默认已配置为通用局域网IP地址，用户可以通过修改 `docker-compose.yml` 中 Logstash 容器的 `INNER_IP_LIST` 环境变量来自定义内部 IP 地址列表。格式为“<起始IP>-<结束IP>,IP”（单条记录支持IP范围和单个IP，多条记录用半角逗号分隔，不能有空格），配置示例如下：
 
 ```
 version: "3"
@@ -124,19 +122,21 @@ services:
 
 在 docker-compose.yml 文件同级目录下创建下列目录：
 ``` bash
-$ mkdir data/elasticsearch/nodes -p -m 777
-$ mkdir data/logstash -p -m 777
-$ mkdir data/kibana -p -m 777
-$ mkdir data/logs -p -m 777
+mkdir data/elasticsearch/nodes
+mkdir data/logstash
+mkdir data/kibana
+mkdir data/logs
+chown -R 1000 data
+# E.L.K. 默认使用 uid 为 1000的用户运行
 ```
 
 **第六步**：启动应用
 
 ``` bash
-$ docker-compose up -d
+docker-compose up -d
 ```
 
-启动后等待一段时间，则可以通过下面的地址访问 API 接口：
+启动时将首先从 Docker HUB 上下载各模块的镜像文件，然后运行，可能需要等待一段时间。等待系统启动完成后，可以通过下面的地址访问 API 接口：
 
 http://x.x.x.x:8081/swagger-ui.html
 
@@ -166,8 +166,6 @@ http://x.x.x.x:5601/
 | environment  | INNER_IP_LIST       | 用于定义企业的内部IP地址，支持地址段和地址，多个以逗号分隔，不允许出现空格
 | volumes      | /usr/share/logstash/data    | Logstash 数据目录
 | volumes      | /usr/share/logstash/logs    | Logstash 日志目录
-| volumes      | /usr/share/logstash/config/ | Logstash 配置目录
-| entrypoint   | 参见 docker-compose 配置    | Logstash 启动命令行，不建议修改
 
 #### Kibana
 
@@ -200,9 +198,8 @@ http://x.x.x.x:5601/
 | environment  | THREADS             | 清洗线程数，默认10个，建议不超过20个
 | environment  | CACHE_SIZE          | 清洗模块缓存的已处理记录数，缓存时间300秒，先进先出
 | environment  | DEBUG               | 调试模式开关，生产环境禁用，将产生大量输出
-| volumes      | /opt/filter/rules/apps.json           | Wappalyzer 指纹库
-| volumes      | /opt/filter/rules/nmap-service-probes | NMAP 指纹库
-| volumes      | /opt/filter/config/plugin.yml         | 清洗插件配置，控制插件的启用和关闭
+| volumes      | /opt/filter/rules/  | Wappalyzer、NMAP指纹库文件
+| volumes      | /opt/filter/config/plugin.yml | 清洗插件配置，控制插件的启用和关闭，可不配置此项
 
 #### Passets-Api
 
@@ -225,25 +222,14 @@ http://x.x.x.x:5601/
 
 ```
 ├─ docker-compose.yml        # docker-compose 配置文件（X86_64）
-├─ docker-compose_armv7.yml  # docker-compose 配置文件（ARMv7）
 ├─ config                    # 配置文件
 │  ├─ kibana.ndjson          # Kibana 配置文件
 │  └─ plugin.yml             # 数据清洗模块配置文件
 ├─ docs                      # 文档
 │  └─ ... ...
-├─ plugins                   # 数据清洗插件
-│  └─ ... ...
 ├─ rules                     # 指纹库
 │  ├─ apps.json              # Wappalyzer 开源Web指纹库
-│  ├─ nmap-service-probes    # NMAP 指纹库
-│  └─ nmap.json              # 解析后的 NMAP 指纹库，清洗模块自动生成
-├─ logstash                  # Logstash 相关配置文件
-│  ├─ ip.rb                  # 识别内外网IP的过滤插件
-│  ├─ url.rb                 # 识别站点、路径及URL模板的过滤插件
-│  ├─ GeoLite2-City.mmdb     # GEOIP2 IP 定位数据库
-│  ├─ logstash.yml           # Logstash 程序配置
-│  ├─ logstash.conf          # Logstash 数据清洗配置文件
-│  └─ log4j2.properties      # Logstash 日志记录配置
+│  └─ nmap-service-probes    # NMAP 指纹库
 └─data                       # 容器数据目录，需自行创建
    ├─ elasticsearch          # Elasticsearch 数据
    ├─ logstash               # Logstash 数据

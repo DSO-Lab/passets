@@ -33,7 +33,7 @@ services:
     restart: unless-stopped
 
   logstash:
-    image: logstash:7.4.1
+    image: dsolab/passets-logstash:1.0.0
     container_name: passets-logstash
     environment:
       - TZ=Asia/Shanghai
@@ -45,14 +45,12 @@ services:
     volumes:
       - ./data/logstash:/usr/share/logstash/data
       - ./data/logs:/usr/share/logstash/logs
-      - ./logstash/:/usr/share/logstash/config/
     restart: unless-stopped
     depends_on:
       - elasticsearch
     networks:
       passets:
         ipv4_address: 172.20.20.100
-    entrypoint: ['/usr/share/logstash/bin/logstash', '-f', '/usr/share/logstash/config/logstash.conf', '--config.reload.automatic']
 
   filter:
     image: dsolab/passets-filter:1.0.0
@@ -62,11 +60,10 @@ services:
       - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
       - THREADS=20
-      - CACHE_SIZE=1024
+      - CACHE_SIZE=256
       - DEBUG=0
     volumes:
-      - ./rules/apps.json:/opt/filter/rules/apps.json
-      - ./rules/nmap-service-probes:/opt/filter/rules/nmap-service-probes
+      - ./rules/:/opt/filter/rules/
       - ./config/plugin.yml:/opt/filter/config/plugin.yml
     networks:
       - passets
