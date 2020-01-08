@@ -122,10 +122,10 @@ services:
 
 在 docker-compose.yml 文件同级目录下创建下列目录：
 ``` bash
-mkdir data/elasticsearch/nodes
-mkdir data/logstash
-mkdir data/kibana
-mkdir data/logs
+mkdir -p data/elasticsearch/nodes
+mkdir -p data/logstash
+mkdir -p data/kibana
+mkdir -p data/logs
 chown -R 1000 data
 # E.L.K. 默认使用 uid 为 1000的用户运行
 ```
