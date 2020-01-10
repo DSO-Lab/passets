@@ -99,7 +99,7 @@ curl -L https://github.com/AliasIO/Wappalyzer/raw/master/src/apps.json -o ./rule
 curl -L https://svn.nmap.org/nmap/nmap-service-probes -o ./rules/nmap-service-probes
 ```
 
-IP 地址数据库的更新请参阅 [passets-logstash](https://github.com/DSO-Lab/passets-logstash/README.md) 的文档说明。
+IP 地址数据库的更新请参阅 [passets-logstash](https://github.com/DSO-Lab/passets-logstash) 的文档说明。
 
 **第四步**：定义自己的内部IP地址
 
@@ -169,18 +169,18 @@ http://x.x.x.x:5601/
 
 #### Kibana
 
-| 类型         | 参数名              | 参数说明
-|--------------|---------------------|--------------------------------------------------|
-| environment  | ELASTICSEARCH_URL   | ES 服务器地址:端口
-| volumes      | /usr/share/kibana/data    | Kibana 数据目录
-| volumes      | /usr/share/kibana/logs    | Kibana 日志目录
-| port         | 5601                | 对外开放的 Kibana 端口
+| 类型         | 参数名                 | 参数说明
+|--------------|------------------------|--------------------------------------------------|
+| environment  | ELASTICSEARCH_HOSTS    | ES 服务器 URL，示例：http://127.0.0.1:9200
+| volumes      | /usr/share/kibana/data | Kibana 数据目录
+| volumes      | /usr/share/kibana/logs | Kibana 日志目录
+| port         | 5601                   | 对外开放的 Kibana 端口
 
 #### Passets-Sensor
 
 | 类型         | 参数名              | 参数说明
 |--------------|---------------------|--------------------------------------------------|
-| environment  | interface           | 用于捕获网络流量的宿主机网卡编号，例如：eth0、ens160等
+| environment  | interface           | 流量采集网口编号，与宿主机相同，例如：eth0、ens160等
 | environment  | ip                  | Logstash 服务器地址（只有集群模式才需要修改）
 | environment  | port                | Logstash 服务器接收数据的端口
 | environment  | tag                 | 记录标识，分布式场景下用于识别数据来自哪个采集模块
@@ -195,8 +195,11 @@ http://x.x.x.x:5601/
 |--------------|---------------------|--------------------------------------------------|
 | environment  | ELASTICSEARCH_URL   | ES 服务器地址:端口
 | environment  | ELASTICSEARCH_INDEX | ES 索引前缀，需与Logstash配置保持一致
-| environment  | THREADS             | 清洗线程数，默认10个，建议不超过20个
-| environment  | CACHE_SIZE          | 清洗模块缓存的已处理记录数，缓存时间300秒，先进先出
+| environment  | THREADS             | 清洗线程数，默认10，建议不超过20
+| environment  | RANGE               | 首次处理数据的时间提前量，单位分钟，默认15
+| environment  | BATCH_SIZE          | 每线程单次处理的数据条数，默认20条
+| environment  | CACHE_SIZE          | 清洗模块缓存的已处理记录数，缓存时间300秒，默认1024
+| environment  | MODE                | 工作模式：1-主节点，0-从节点，默认为1
 | environment  | DEBUG               | 调试模式开关，生产环境禁用，将产生大量输出
 | volumes      | /opt/filter/rules/  | Wappalyzer、NMAP指纹库文件
 | volumes      | /opt/filter/config/plugin.yml | 清洗插件配置，控制插件的启用和关闭，可不配置此项
