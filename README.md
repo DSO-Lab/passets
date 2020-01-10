@@ -11,7 +11,7 @@ passets 是一套由 [DSO 安全实验室（DSO Security Lab）](http://www.dsol
 > 提供流量采集及基本的流量过滤和处理。
 
 **数据存储模块（ELK）**
-> 采用成熟的 [Elasticsearch](docs/ELASTICSEARCH.md) + [Logstash](https://github.com/DSO-Lab/passets-logstash/README.md) + [Kibana](docs/KIBANA.md) 框架， 负责采集数据的基本加工、存储及索引等。
+> 采用成熟的 [Elasticsearch](docs/ELASTICSEARCH.md) + [Logstash](https://github.com/DSO-Lab/passets-logstash) + [Kibana](docs/KIBANA.md) 框架， 负责采集数据的基本加工、存储及索引等。
 
 **[数据清洗模块](https://github.com/DSO-Lab/passets-filter)**
 > 根据数据清洗插件对数据进行深度清洗、标记和重组。
