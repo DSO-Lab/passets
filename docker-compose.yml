@@ -99,6 +99,7 @@ services:
       - timeout=3600
       - switch=on
     restart: unless-stopped
+    privileged: true
     depends_on:
       - logstash
     network_mode: host
