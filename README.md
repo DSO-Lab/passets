@@ -185,7 +185,6 @@ http://x.x.x.x:5601/
 | environment  | port                | Logstash 服务器接收数据的端口
 | environment  | tag                 | 记录标识，分布式场景下用于识别数据来自哪个采集模块
 | environment  | cache               | 采集器缓存的已处理记录数，缓存时间120秒，先进先出
-| environment  | switch              | 详细数据开关，开启后tcp记录增加data字段，http记录增加header和body字段
 | environment  | timeout             | 采集器内存回收超时时间，超过指定的时间，采集器自动回收内存
 | environment  | debug               | 调试模式开关，生产环境禁用，将产生大量输出
 

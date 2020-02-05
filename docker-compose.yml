@@ -97,7 +97,6 @@ services:
       - debug=off
       - cache=1024
       - timeout=3600
-      - switch=on
     restart: unless-stopped
     privileged: true
     depends_on:
