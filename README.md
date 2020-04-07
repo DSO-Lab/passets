@@ -172,6 +172,7 @@ http://x.x.x.x:5601/
 | 类型         | 参数名                 | 参数说明
 |--------------|------------------------|--------------------------------------------------|
 | environment  | ELASTICSEARCH_HOSTS    | ES 服务器 URL，示例：http://127.0.0.1:9200
+| environment  | I18N_LOCALE            | Kibana 使用的界面语言
 | volumes      | /usr/share/kibana/data | Kibana 数据目录
 | volumes      | /usr/share/kibana/logs | Kibana 日志目录
 | port         | 5601                   | 对外开放的 Kibana 端口
@@ -197,9 +198,10 @@ http://x.x.x.x:5601/
 | environment  | THREADS             | 清洗线程数，默认10，建议不超过20
 | environment  | RANGE               | 首次处理数据的时间提前量，单位分钟，默认15
 | environment  | BATCH_SIZE          | 每线程单次处理的数据条数，默认20条
-| environment  | CACHE_SIZE          | 清洗模块缓存的已处理记录数，缓存时间300秒，默认1024
+| environment  | CACHE_SIZE          | 清洗模块缓存的已处理记录数，默认1024
+| environment  | CACHE_TTL           | 清洗模块缓存的过期时间，单位秒，默认600
 | environment  | MODE                | 工作模式：1-主节点，0-从节点，默认为1
-| environment  | DEBUG               | 调试模式开关，生产环境禁用，将产生大量输出
+| environment  | DEBUG               | 调试模式开关，0以上整数，生产环境禁用
 | volumes      | /opt/filter/rules/  | Wappalyzer、NMAP指纹库文件
 | volumes      | /opt/filter/config/plugin.yml | 清洗插件配置，控制插件的启用和关闭，可不配置此项
 
