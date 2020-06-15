@@ -5278,7 +5278,7 @@ softmatch elf-exe m|^.{0,4}\x7fELF\x02[\x01\x02]\x01| p/ELF 64-bit executable fi
 
 
 
-match smtp m|^220 ([-.+\w]+) Esmtp (.+)|
+match smtp m|^220 ([-.+\w]+) Esmtp (.+)| p/smtp/
 ##############################NEXT PROBE##############################
 Probe TCP GenericLines q|\r\n\r\n|
 rarity 1
@@ -13618,7 +13618,7 @@ ports 3388,3389
 fallback TerminalServer
 
 # Windows 10
-match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x[0-9]{2,4}\0\x02\x1f\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a
+match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x12.\0\x02.\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a
 match ms-wbt-server m|^\x03\0\0\x0b\x06\xd0\0\0\x124\0$| p/Microsoft Terminal Services/ o/Windows XP/ cpe:/o:microsoft:windows_xp/a
 
 ##############################NEXT PROBE##############################
@@ -14120,7 +14120,7 @@ softmatch smpp m|^\0\0\0\x10\x80\0\0\0\0\0\0\x03....$|s
 
 # From xlsclients
 
-match microsoft-ds m|^\0\0\0\xf8\xfe\x53\x4d\x42\x40\0\0\0\0\0\0\0\0\0(.*?)|
+match microsoft-ds m|^\0\0\0\xf8\xfe\x53\x4d\x42\x40\0\0\0\0\0\0\0\0\0(.*?)| p/SMB/
 ##############################NEXT PROBE##############################
 Probe TCP X11Probe q|\x6C\0\x0B\0\0\0\0\0\0\0\0\0|
 rarity 4
