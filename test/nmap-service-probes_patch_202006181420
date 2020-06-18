@@ -3545,7 +3545,7 @@ match ssh m|^SSH-([\d.]+)-OpenSSH_([\w.]+) DragonFly-| p/OpenSSH/ v/$2/ i/protoc
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) FIPS\n| p/OpenSSH/ v/$2/ i/protocol $1; Imperva SecureSphere firewall/ d/firewall/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) FIPS\r\n| p/OpenSSH/ v/$2/ i/protocol $1; Cisco NX-OS/ d/switch/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) NCSA_GSSAPI_GPT_([-\w_.]+) GSI\n| p/OpenSSH/ v/$2/ i/protocol $1; NCSA GSSAPI authentication patch $3/ cpe:/a:openbsd:openssh:$2/
-match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+) \.\n| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/
+match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+) PKIX\r\n| p/OpenSSH/ v/$2/ i/protocol $1; X.509 v3 certificate support/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)-FIPS\(capable\)\r\n| p/OpenSSH/ v/$2/ i/protocol $1; FIPS capable/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)-sshjail\n| p/OpenSSH/ v/$2/ i/protocol $1; sshjail patch/ cpe:/a:openbsd:openssh:$2/
