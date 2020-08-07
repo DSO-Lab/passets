@@ -1,0 +1,31 @@
+{
+	"apps": [{
+			"probe": "Probe TCP TerminalServerCookie q|\x03\0\0*%\xe0\0\0\0\0\0Cookie: mstshash=nmap\r\n\x01\0\x08\0\x03\0\0\0|",
+			"src_conf": "match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\x1f\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a",
+			"dst_conf": "match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x12.\0\x02.\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a",
+			"action": "update",
+			"data": "030000130ed000001234000209080002000000"
+		},
+		{
+			"probe": "Probe TCP NULL q||",
+			"src_conf": "",
+			"dst_conf": "match smtp m|^220 ([-.+\w]+) Esmtp (.+)| p/smtp/",
+			"action": "add",
+			"data": "32323020736d74702e71712e636f6d2045736d7470205151204d61696c205365727665720d0a"
+		},
+		{
+			"probe": "Probe TCP SMBProgNeg q|\0\0\0\xa4\xff\x53\x4d\x42\x72\0\0\0\0\x08\x01\x40\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x40\x06\0\0\x01\0\0\x81\0\x02PC NETWORK PROGRAM 1.0\0\x02MICROSOFT NETWORKS 1.03\0\x02MICROSOFT NETWORKS 3.0\0\x02LANMAN1.0\0\x02LM1.2X002\0\x02Samba\0\x02NT LANMAN 1.0\0\x02NT LM 0.12\0|",
+			"src_conf": "match microsoft-ds m|^\0\0\0\x61\xffSMBr\0\0\0\0\x88\x03\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0@\x06\0\0\x01\0\x11\x06\0\x02\x0a\0\x01\0\x04\x11\0\0\xff\xff\0\0....\0\x03\0\0..........\x08\x1c\0........\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0$|s p/Xerox printer microsoft-ds/ d/printer/",
+			"dst_conf": "match microsoft-ds m|^\0\0\0\xf8\xfe\x53\x4d\x42\x40\0\0\0\0\0\0\0\0\0(.*?)| p/SMB/",
+			"action": "add",
+			"data": "000000f8fe534d4240000000000000000000010001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000300ff020000d12df313baa703459832f1f62049c80a07000000000080000000800000008000d9cadf2f8f3fd6015f1b3a076e30d6018000780000000000607606062b0601050502a06c306aa03c303a060a2b06010401823702021e06092a864882f71201020206092a864886f712010202060a2a864886f71201020203060a2b06010401823702020aa32a3028a0261b246e6f745f646566696e65645f696e5f5246433431373840706c656173655f69676e6f7265"
+		},
+		{
+			"probe": "Probe TCP NULL q||",
+			"src_conf": "match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+) \.\n| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/",
+			"dst_conf": "match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/",
+			"action": "update",
+			"data": "5353482d322e302d4f70656e5353485f372e340d0a"
+		}
+	]
+}

@@ -8,7 +8,9 @@ http://packages.ntop.org/
 
 ### 安装参考 - CentOS 7.3
 
-**第一步**：pf_ring安装、内核升级:
+**第一步**：安装pf_ring
+
+**在线环境安装pf_ring**
 
 ```
 yum -y install wget net-tools
@@ -18,6 +20,56 @@ rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum clean all
 yum update
 yum -y install pfring-dkms
+```
+
+**离线环境安装pf_ring**
+
+pf_ring离线yum源制作：
+
+```
+mkdir -p /opt/yum-repo
+
+yum install --downloadonly --downloaddir=/opt/yum-repo net-tools wget createrepo 
+yum -y install wget net-tools createrepo
+cd /etc/yum.repos.d/
+wget http://packages.ntop.org/centos/ntop.repo -O ntop.repo
+rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum clean all
+
+yum update --downloadonly --downloaddir=/opt/yum-repo
+yum install --downloadonly --downloaddir=/opt/yum-repo pfring-dkms
+
+createrepo -pdo /opt/yum-repo /opt/yum-repo 
+createrepo --update /opt/yum-repo
+
+tar zcvf /opt/yum-repo.tar.gz /opt/yum-repo/
+```
+
+pf_ring离线yum源安装：
+
+```
+vi /etc/yum.repos.d/localyum.repo
+
+[localyum]
+name=localyum
+baseurl=file:///opt/yum-repo
+enable=1
+gpgcheck=0
+```
+
+```
+tar zxvf yum-repo.tar.gz -C /opt/
+
+mkdir /etc/yum.repos.d/bak
+mv /etc/yum.repos.d/CentOS-* /etc/yum.repos.d/bak/
+yum clean all
+yum makecache
+yum update
+rm -rf /etc/yum.repos.d/CentOS-*
+```
+
+```
+yum install net-tools wget createrepo pfring-dkms
 ```
 
 **第二步**：内核升级后重启使配置生效（不同版本系统升级后的内核版本不一样，根据实际情况选择）
@@ -35,7 +87,7 @@ yum -y install pfring-dkms
 cat /boot/grub2/grub.cfg | grep "menuentry"
 
 # 修改默认启动内核
-grub2-set-default 'CentOS Linux (3.10.0-1062.4.3.el7.x86_64) 7 (Core)'
+grub2-set-default 'CentOS Linux (3.10.0-1127.18.2.el7.x86_64) 7 (Core)'
 
 # 检查配置是否生效
 grub2-editenv list

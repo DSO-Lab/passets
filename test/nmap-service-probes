@@ -3545,7 +3545,7 @@ match ssh m|^SSH-([\d.]+)-OpenSSH_([\w.]+) DragonFly-| p/OpenSSH/ v/$2/ i/protoc
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) FIPS\n| p/OpenSSH/ v/$2/ i/protocol $1; Imperva SecureSphere firewall/ d/firewall/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) FIPS\r\n| p/OpenSSH/ v/$2/ i/protocol $1; Cisco NX-OS/ d/switch/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w_.-]+) NCSA_GSSAPI_GPT_([-\w_.]+) GSI\n| p/OpenSSH/ v/$2/ i/protocol $1; NCSA GSSAPI authentication patch $3/ cpe:/a:openbsd:openssh:$2/
-match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/
+match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+) \.\n| p/OpenSSH/ v/$2/ i/protocol $1/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+) PKIX\r\n| p/OpenSSH/ v/$2/ i/protocol $1; X.509 v3 certificate support/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)-FIPS\(capable\)\r\n| p/OpenSSH/ v/$2/ i/protocol $1; FIPS capable/ cpe:/a:openbsd:openssh:$2/
 match ssh m|^SSH-([\d.]+)-OpenSSH_([\w._-]+)-sshjail\n| p/OpenSSH/ v/$2/ i/protocol $1; sshjail patch/ cpe:/a:openbsd:openssh:$2/
@@ -5277,8 +5277,6 @@ softmatch elf-exe m|^.{0,4}\x7fELF\x01[\x01\x02]\x01| p/ELF 32-bit executable fi
 softmatch elf-exe m|^.{0,4}\x7fELF\x02[\x01\x02]\x01| p/ELF 64-bit executable file/
 
 
-
-match smtp m|^220 ([-.+\w]+) Esmtp (.+)| p/smtp/
 ##############################NEXT PROBE##############################
 Probe TCP GenericLines q|\r\n\r\n|
 rarity 1
@@ -13618,7 +13616,7 @@ ports 3388,3389
 fallback TerminalServer
 
 # Windows 10
-match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x12.\0\x02.\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a
+match ms-wbt-server m|^\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\x1f\x08\0\x02\0\0\0| p/Microsoft Terminal Services/ o/Windows/ cpe:/o:microsoft:windows/a
 match ms-wbt-server m|^\x03\0\0\x0b\x06\xd0\0\0\x124\0$| p/Microsoft Terminal Services/ o/Windows XP/ cpe:/o:microsoft:windows_xp/a
 
 ##############################NEXT PROBE##############################
@@ -14119,8 +14117,6 @@ softmatch vertica m|^V\0\0\x01f:ErrorMsg\nelevel:23\nfilename:/scratch_a/release
 softmatch smpp m|^\0\0\0\x10\x80\0\0\0\0\0\0\x03....$|s
 
 # From xlsclients
-
-match microsoft-ds m|^\0\0\0\xf8\xfe\x53\x4d\x42\x40\0\0\0\0\0\0\0\0\0(.*?)| p/SMB/
 ##############################NEXT PROBE##############################
 Probe TCP X11Probe q|\x6C\0\x0B\0\0\0\0\0\0\0\0\0|
 rarity 4
