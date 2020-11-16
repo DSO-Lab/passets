@@ -140,7 +140,7 @@ docker-compose up -d
 
 http://x.x.x.x:8081/swagger-ui.html
 
-或者通过集成的 Kibana 进行可视化查询或展示（[Kibana 配置方法示例](docs/KIBANA_HELP.md)）：
+或者通过集成的 Kibana 进行可视化查询或展示（[Kibana 配置方法示例](docs/KIBANA.md)）：
 
 http://x.x.x.x:5601/
 
