@@ -5,7 +5,7 @@ services:
     image: dsolab/passets-api:1.0.0
     container_name: passets-api
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=CST-8
       - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
       - SECRET=<dsolab-passets-api-secret>
@@ -21,7 +21,7 @@ services:
     image: elasticsearch:7.5.1
     container_name: passets-elasticsearch
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=CST-8
       - discovery.type=single-node
     ports:
       - 9200:9200
@@ -36,7 +36,7 @@ services:
     image: dsolab/passets-logstash:1.0.0
     container_name: passets-logstash
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=CST-8
       - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
       - INNER_IP_LIST=10.0.0.0-10.255.255.255,172.16.0.0-172.31.255.255,192.168.0.0-192.168.255.255,169.254.0.0-169.254.255.255,127.0.0.1-127.0.0.255
@@ -56,7 +56,7 @@ services:
     image: dsolab/passets-filter:1.0.0
     container_name: passets-filter
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=CST-8
       - ELASTICSEARCH_URL=passets-elasticsearch:9200
       - ELASTICSEARCH_INDEX=logstash-passets
       - THREADS=20
@@ -75,7 +75,7 @@ services:
     image: kibana:7.5.1
     container_name: passets-kibana
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=CST-8
       - ELASTICSEARCH_HOSTS=http://passets-elasticsearch:9200
       - I18N_LOCALE=zh-CN
     volumes:
@@ -91,6 +91,7 @@ services:
     image: dsolab/passets-sensor:1.0.0
     container_name: passets-sensor
     environment:
+      - TZ=CST-8
       - port=5044
       - tag=sensor
       - interface=ens192
